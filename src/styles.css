@@ -1,0 +1,31 @@
+nav a {
+  cursor: pointer;
+  text-decoration: none;
+  color: blue;
+}
+
+nav a.active {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.book-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.book-card {
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.book-card img {
+  max-width: 100%;
+  height: auto;
+  margin-top: 0.5rem;
+}
+
+/* You can add global styles to this file, and also import other style files */

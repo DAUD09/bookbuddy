@@ -1,0 +1,26 @@
+<html>
+    <h1>📚 Welcome to BookBuddy</h1>
+    <p> Search and save your favourite books!</p>
+
+    <br>
+
+    <h2>Book Search</h2>
+
+    <input type="text" #searchBox placeholder="Search for books..."/>
+    <button (click)="searchBooks(searchBox.value)">Search</button>
+
+    <div *ngIf="books.length === 0">
+        <p>No books found. Try searching!</p>
+    </div>
+
+    <div *ngIf="books.length > 0" class="book-list">
+        <div *ngFor="let book of books" class="book-card">
+            <h3>{{ book.volumeInfo.title }}</h3>
+            <p *ngIf="book.volumeInfo.authors">
+                by {{ book.volumeInfo.authors.join(', ') }}
+            </p>
+            <img *ngIf="book.volumeInfo.imageLinks" [src]="book.volumeInfo.imageLinks.thumbnail" alt="Book cover" />
+        </div>
+    </div>
+
+</html>
