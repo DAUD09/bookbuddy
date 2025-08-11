@@ -19,7 +19,7 @@ export class HomeComponent {
   }
 
   searchBooks(query: string) {
-    const apiUrl = '`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}';
+    const apiUrl = 'https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}';
     this.http.get<any>(apiUrl).subscribe({
       next: (data) => {
         this.books = data.items || [];
