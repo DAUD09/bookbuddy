@@ -20,6 +20,8 @@
                 by {{ book.volumeInfo.authors.join(', ') }}
             </p>
             <img *ngIf="book.volumeInfo.imageLinks" [src]="book.volumeInfo.imageLinks.thumbnail" alt="Book cover" />
+        
+            <button (click)="addToFavorites(book)">⭐ Add to Favorites</button>
         </div>
     </div>
 

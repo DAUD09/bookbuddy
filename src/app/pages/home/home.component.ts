@@ -30,4 +30,19 @@ export class HomeComponent {
     });
   }
 
+  addToFavorites(book: any) {
+    // Get existing from localStorage or empty array
+    let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+
+    // Check if book is already in favorites
+    const exists = favorites.some((fav: any)  => fav.id === book.id);
+    if (!exists) {
+      favorites.push(book);
+      localStorage.setItem('favorites', JSON.stringify(favorites));
+      alert('Book added to favorites!');
+    } else {
+      alert('This book is already in favorites');
+    }
+  }
+
 }
