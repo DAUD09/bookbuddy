@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { Firestore, collection, addDoc, getDocs } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-home',
@@ -12,7 +13,7 @@ import { CommonModule } from '@angular/common';
 export class HomeComponent {
   books: any[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private firestore: Firestore) {}
 
   ngOnInit() {
     this.searchBooks('harry potter');
@@ -30,19 +31,19 @@ export class HomeComponent {
     });
   }
 
-  addToFavorites(book: any) {
-    // Get existing from localStorage or empty array
-    let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+  async addToFavorites(book: any) {
+  const favCol = collection(this.firestore, 'favorites');
 
-    // Check if book is already in favorites
-    const exists = favorites.some((fav: any)  => fav.id === book.id);
-    if (!exists) {
-      favorites.push(book);
-      localStorage.setItem('favorites', JSON.stringify(favorites));
-      alert('Book added to favorites!');
-    } else {
-      alert('This book is already in favorites');
-    }
+  // Optional: prevent duplicates
+  const snapshot = await getDocs(favCol);
+  const exists = snapshot.docs.some(doc => (doc.data() as any).id === book.id);
+
+  if (!exists) {
+    await addDoc(favCol, { id: book.id, volumeInfo: book.volumeInfo });
+    alert('Book added to favorites!');
+  } else {
+    alert('Already in favorites!');
   }
+}
 
 }

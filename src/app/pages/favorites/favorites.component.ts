@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Firestore, collection, getDocs, addDoc, deleteDoc, doc } from '@angular/fire/firestore' ;
 
 @Component({
   selector: 'app-favorites',
@@ -11,17 +12,22 @@ import { CommonModule } from '@angular/common';
 export class FavoritesComponent {
   favorites: any[] = [];
 
-  ngOnInit() {
-    this.loadFavorites();
+  constructor(private firestore: Firestore) {}
+
+  async ngOnInit() {
+    await this.loadFavorites();
   }
 
-  loadFavorites() {
-    this.favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+  async loadFavorites() {
+    const favCol = collection(this.firestore, 'favorites');
+    const snapshot = await getDocs(favCol);
+    this.favorites = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
   }
 
-  removeFavorite(bookId: string) {
-    this.favorites = this.favorites.filter(book => book.id !== bookId);
-    localStorage.setItem('favorites', JSON.stringify(this.favorites));
+  async removeFavorite(bookId: string) {
+    await deleteDoc(doc(this.firestore, 'favorites', bookId));
+    await this.loadFavorites();
+
   }
 
 }
